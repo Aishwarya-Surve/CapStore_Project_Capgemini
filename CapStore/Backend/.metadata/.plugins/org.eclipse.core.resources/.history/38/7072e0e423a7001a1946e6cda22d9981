@@ -1,0 +1,9 @@
+package com.capgemini.capstore.dao;
+
+import com.capgemini.capstore.bean.ProductBean;
+
+public class ProductDAO {
+	
+		
+
+}

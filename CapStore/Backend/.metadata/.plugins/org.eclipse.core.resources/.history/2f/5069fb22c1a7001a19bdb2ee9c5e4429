@@ -1,0 +1,6 @@
+package com.capgemini.capstore.exception;
+
+@SuppressWarnings("serial")
+public class CapstoreCustomException {
+
+}

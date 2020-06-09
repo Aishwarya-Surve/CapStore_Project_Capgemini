@@ -1,0 +1,9 @@
+package com.capgemini.capstore.service;
+
+import com.capgemini.capstore.bean.ProductBean;
+
+public class ProductService {
+	
+			
+
+}

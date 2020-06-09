@@ -1,0 +1,16 @@
+package com.capgemini.capstore.dao;
+
+import com.capgemini.capstore.bean.ProductBean;
+
+public class ProductDAO {
+	
+		// add hotel by admin
+		public boolean addProduct(ProductBean hotelBean);
+
+		// delete hotel by admin
+		public boolean deleteProduct(int hotelId);
+
+		// update hotel by admin
+		public boolean updateProduct(ProductBean productBean);
+
+}

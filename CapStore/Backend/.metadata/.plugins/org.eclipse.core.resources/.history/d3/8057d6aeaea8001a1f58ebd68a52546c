@@ -1,0 +1,78 @@
+package com.capgemini.capstore.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capgemini.capstore.bean.ProductBean;
+import com.capgemini.capstore.response.CapstoreResponse;
+import com.capgemini.capstore.service.ProductService;
+
+@RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
+public class ProductController {
+
+	@Autowired
+	private ProductService productService;
+
+	CapstoreResponse capstoreResponse = new CapstoreResponse();
+	
+	@GetMapping(path = "/getProductList")
+	public CapstoreResponse showAllProducts() {
+		List<ProductBean> productList = productService.showAllProducts();
+		CapstoreResponse capstoreResponse = new CapstoreResponse();
+		if (productList != null && !productList.isEmpty()) {
+			capstoreResponse.setStatusCode(201);
+			capstoreResponse.setMessage("Success");
+			capstoreResponse.setDescription("Product Records Found...");
+			capstoreResponse.setProductList(productList);
+		} else {
+			capstoreResponse.setStatusCode(400);
+			capstoreResponse.setMessage("Failed");
+			capstoreResponse.setDescription("Enable to Fetch Product Records!");
+		}
+		return capstoreResponse;
+	}//End of showAllProducts()
+
+	// Add Product
+	@PostMapping("/addProduct")
+	public CapstoreResponse addProduct(@RequestBody ProductBean hotelBean) {
+		boolean isProductAdded = productService.addProduct(hotelBean);
+		if (isProductAdded) {
+			capstoreResponse.setStatusCode(201);
+			capstoreResponse.setMessage("Success");
+			capstoreResponse.setDescription("Product added successfully");
+		}
+		return capstoreResponse;
+	}// End of addProduct()
+
+	// Delete product
+	@DeleteMapping("/deleteProduct")
+	public CapstoreResponse deleteProduct(@RequestParam int productId) {
+		boolean deleteProduct = productService.deleteProduct(productId);
+		capstoreResponse.setStatusCode(201);
+		capstoreResponse.setMessage("Success");
+		capstoreResponse.setDescription("Product deleted successfully");
+		return capstoreResponse;
+	}// End of deleteProduct()
+
+	// Update product
+	@PostMapping(path = "/updateProduct")
+	public CapstoreResponse updateProduct(@RequestBody ProductBean productBean) {
+		boolean productUpdated = productService.updateProduct(productBean);
+		if (productUpdated) {
+			capstoreResponse.setStatusCode(201);
+			capstoreResponse.setMessage("Success");
+			capstoreResponse.setDescription("Product updated successfully");
+		}
+		return capstoreResponse;
+	}// End of updateProduct()
+
+}

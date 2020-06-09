@@ -1,0 +1,96 @@
+package com.capgemini.capstore.dao;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceUnit;
+
+import org.springframework.stereotype.Repository;
+
+import com.capgemini.capstore.bean.ProductBean;
+
+@Repository
+public class ProductDAOImpl {
+
+	@PersistenceUnit
+	public EntityManagerFactory entityManagerFactory;
+
+	EntityManager entityManager;
+	EntityTransaction entityTransaction;
+
+	// Add product
+	@Override
+	public boolean addProduct(ProductBean productBean){
+		boolean addProduct = false;
+		try {
+			entityManager = entityManagerFactory.createEntityManager();
+			entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+			entityManager.persist(productBean);
+			entityTransaction.commit();
+			entityManager.close();
+			addProduct = true;
+		} catch (Exception e) {
+			throw new UnableToAddException();
+		}
+		return addProduct;
+	}
+
+	@Override
+	public boolean deleteProduct(int productId){
+		boolean product = false;
+		try {
+			entityManager = entityManagerFactory.createEntityManager();
+			entityTransaction = entityManager.getTransaction();
+			entityTransaction.begin();
+			ProductBean hotelBean = entityManager.find(ProductBean.class, productId);
+			entityManager.remove(hotelBean);
+			entityTransaction.commit();
+			product = true;
+		} catch (Exception e) {
+			throw new UnableDeleteException();
+		}
+		return product;
+	}
+
+	@Override
+	public boolean updateProduct(ProductBean productBean) {
+		entityManager = entityManagerFactory.createEntityManager();
+		ProductBean existingProductDetails = entityManager.find(ProductBean.class, productBean.getProductId());
+		boolean productUpdated = false;
+
+		if (existingProductDetails != null) {
+
+			String productName = productBean.getProductName();
+			if (productName != null) {
+				existingProductDetails.setProductName(productName);
+			}
+
+			String location = hotelBean.getLocation();
+			if (location != null) {
+				existingHotelDetails.setLocation(location);
+			}
+
+			int availableAcRoom = hotelBean.getAvailableAcRoom();
+			if (availableAcRoom > 0) {
+				existingHotelDetails.setAvailableAcRoom(availableAcRoom);
+			}
+
+			int availableNonAcRoom = hotelBean.getAvailableNonAcRoom();
+			if (availableNonAcRoom > 0) {
+				existingHotelDetails.setAvailableNonAcRoom(availableNonAcRoom);
+			}
+			try {
+				entityTransaction = entityManager.getTransaction();
+				entityTransaction.begin();
+				entityManager.persist(existingHotelDetails);
+				entityTransaction.commit();
+				hotelUpdated = true;
+			} catch (Exception e) {
+				throw new UnableToUpdateException();
+			}
+			entityManager.close();
+		}
+		return hotelUpdated;
+	}
+}

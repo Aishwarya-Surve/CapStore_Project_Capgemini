@@ -1,0 +1,53 @@
+package com.capgemini.capstore.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capgemini.capstore.bean.ProductBean;
+import com.capgemini.capstore.response.ProductResponse;
+import com.capgemini.capstore.service.ProductService;
+
+@RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
+public class ProductController {
+
+	@Autowired
+	private ProductService productService;
+
+	ProductResponse productResponse = new ProductResponse();
+
+	@PostMapping("/addProduct")
+	public ProductResponse addProduct(@RequestBody ProductBean hotelBean) {
+		boolean isHotelAdded = productService.addProduct(hotelBean);
+		if (isHotelAdded) {
+			productResponse.setStatusCode(201);
+			productResponse.setMessage("Success");
+			productResponse.setDescription("Hotel Added Successfully");
+		}
+		return productResponse;
+	}// end of addHotel()
+
+	@DeleteMapping("/removeHotel")
+	public HotelManagementResponse removeHotel(@RequestParam int hotelId) {
+		boolean removedHotel = hotelService.deleteHotel(hotelId);
+		hotelManagementResponse.setStatusCode(201);
+		hotelManagementResponse.setMessage("Success");
+		hotelManagementResponse.setDescription("Removed Successfully");
+		return hotelManagementResponse;
+	}// end of removeHotel()
+
+	@PostMapping(path = "/updateHotel")
+	public HotelManagementResponse updateHotel(@RequestBody HotelBean hotelBean) {
+		boolean hotelUpdated = hotelService.updateHotel(hotelBean);
+		if (hotelUpdated) {
+			hotelManagementResponse.setStatusCode(201);
+			hotelManagementResponse.setMessage("Success");
+			hotelManagementResponse.setDescription("update Successfully");
+		}
+		return hotelManagementResponse;
+	}// end of updateHotel()
+
+}

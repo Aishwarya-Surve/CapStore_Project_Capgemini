@@ -1,0 +1,14 @@
+package com.capgemini.capstore.response;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ProductResponse {
+	
+	private int statusCode;
+	private String message;
+	private String description;
+	
+	
+
+}

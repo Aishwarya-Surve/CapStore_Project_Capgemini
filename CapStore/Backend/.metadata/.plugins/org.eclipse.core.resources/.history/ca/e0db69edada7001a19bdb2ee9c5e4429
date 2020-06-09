@@ -1,0 +1,57 @@
+package com.capgemini.capstore.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capgemini.capstore.bean.ProductBean;
+import com.capgemini.capstore.response.ProductResponse;
+import com.capgemini.capstore.service.ProductService;
+
+@RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
+public class ProductController {
+
+	@Autowired
+	private ProductService productService;
+
+	ProductResponse productResponse = new ProductResponse();
+
+	@PostMapping("/addProduct")
+	public ProductResponse addProduct(@RequestBody ProductBean hotelBean) {
+		boolean isProductAdded = productService.addProduct(hotelBean);
+		if (isProductAdded) {
+			productResponse.setStatusCode(201);
+			productResponse.setMessage("Success");
+			productResponse.setDescription("Hotel Added Successfully");
+		}
+		return productResponse;
+	}// end of addHotel()
+
+	// Delete product
+	@DeleteMapping("/deleteProduct")
+	public ProductResponse deleteProduct(@RequestParam int productId) {
+		boolean removedHotel = productService.deleteProduct(productId);
+		productResponse.setStatusCode(201);
+		productResponse.setMessage("Success");
+		productResponse.setDescription("Removed Successfully");
+		return productResponse;
+	}// end of removeHotel()
+
+	// Update product
+	@PostMapping(path = "/updateProduct")
+	public ProductResponse updateProduct(@RequestBody ProductBean productBean) {
+		boolean productUpdated = productService.updateProduct(productBean);
+		if (productUpdated) {
+			productResponse.setStatusCode(201);
+			productResponse.setMessage("Success");
+			productResponse.setDescription("update Successfully");
+		}
+		return productResponse;
+	}// end of updateHotel()
+
+}

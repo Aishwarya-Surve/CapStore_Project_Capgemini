@@ -1,0 +1,19 @@
+package com.capgemini.capstore.controller;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class CapstoreAdviceController {
+
+	@ExceptionHandler(HotelCustomException.class)
+	public ResponseBean userErrorHandler(HotelCustomException hotel) {
+		ResponseBean response = new ResponseBean();
+
+		response.setStatusCode(444);
+		response.setMessage("Failure");
+		response.setDescription(hotel.getMessage());
+		return response;
+	}
+
+}
